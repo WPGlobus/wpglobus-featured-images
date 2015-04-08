@@ -47,7 +47,7 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/featured-images)
 ## Screenshots ##
 
 ### 1. Metabox interface. ###
-![Metabox interface.](http://s.wordpress.org/extend/plugins/wpglobus-featured-images/screenshot-1.png)
+![Metabox interface.](https://raw.githubusercontent.com/WPGlobus/wpglobus-featured-images/master/assets/screenshot-1.png)
 
 
 ## Changelog ##
