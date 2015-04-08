@@ -1,1 +1,1 @@
-# WPGlobus-Featured-Images
+# WPGlobus Featured Images
