@@ -283,7 +283,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				if ( $thumbnail_support && current_user_can( 'upload_files' ) ) {
 					add_meta_box(
 						'wpglobus_postimagediv',
-						__( 'WPGlobus Featured Images' ),
+						__( 'WPGlobus Featured Images', 'wpglobus-featured-images' ),
 						array( $this, 'post_thumbnail_meta_box' ),
 						null,
 						'side',
@@ -384,9 +384,9 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			$upload_iframe_src = str_replace( 'type=image', 'type=image&language=' . $language, $upload_iframe_src );
 
 			$set_thumbnail_link =
-				'<p style="clear:both;" class="hide-if-no-js"><a title="' . esc_attr__( 'Set featured image' ) . '" href="%s" id="set-post-thumbnail-' . $language . '" class="thickbox wpglobus-set-post-thumbnail" data-language="' . $language . '">%s</a></p>';
+				'<p style="clear:both;" class="hide-if-no-js"><a title="' . esc_attr__( 'Set featured image', 'wpglobus-featured-images' ) . '" href="%s" id="set-post-thumbnail-' . $language . '" class="thickbox wpglobus-set-post-thumbnail" data-language="' . $language . '">%s</a></p>';
 			$content            =
-				sprintf( $set_thumbnail_link, $upload_iframe_src, esc_html__( 'Set featured image' ) );
+				sprintf( $set_thumbnail_link, $upload_iframe_src, esc_html__( 'Set featured image', 'wpglobus-featured-images' ) );
 
 			if ( $thumbnail_id && get_post( $thumbnail_id ) ) {
 				$old_content_width = $content_width;
@@ -405,7 +405,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 						"WPGlobusFeaturedImages.removeThumbnail('" . $ajax_nonce . "', '" . $language . "', '" . $post->ID . "');return false;";
 
 					$content = sprintf( $set_thumbnail_link, $upload_iframe_src, $thumbnail_html );
-					$content .= '<p class="hide-if-no-js"><a href="#" id="remove-post-thumbnail-' . $language . '" onclick="' . $onclick . '">' . esc_html__( 'Remove featured image' ) . '</a></p>';
+					$content .= '<p class="hide-if-no-js"><a href="#" id="remove-post-thumbnail-' . $language . '" onclick="' . $onclick . '">' . esc_html__( 'Remove featured image', 'wpglobus-featured-images' ) . '</a></p>';
 				}
 				$content_width = $old_content_width;
 			}
