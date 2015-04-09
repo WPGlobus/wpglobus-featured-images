@@ -37,15 +37,30 @@ function wpglobus_featured_images_load() {
 }
 
 if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
-
+	
 	/**
 	 * WPGlobus_Featured_Images
 	 */
 	class WPGlobus_Featured_Images {
 
+		/**
+		 * @var bool $_SCRIPT_DEBUG Internal representation of the define('SCRIPT_DEBUG')
+		 */
+		protected static $_SCRIPT_DEBUG = false;
+
+		/**
+		 * @var string $_SCRIPT_SUFFIX Whether to use minimized or full versions of JS and CSS.
+		 */
+		protected static $_SCRIPT_SUFFIX = '.min';	
+	
 		/** */
 		function __construct() {
 
+			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+				self::$_SCRIPT_DEBUG  = true;
+				self::$_SCRIPT_SUFFIX = '';
+			}		
+		
 			if ( is_admin() ) {
 
 				add_action( 'admin_print_scripts', array(
@@ -225,7 +240,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 
 			wp_register_script(
 				'wpglobus-featured-images',
-				plugin_dir_url( __FILE__ ) . 'wpglobus-featured-images.js',
+				plugin_dir_url( __FILE__ ) . 'wpglobus-featured-images' . self::$_SCRIPT_SUFFIX . ".js",
 				array( 'jquery' ),
 				WPGLOBUS_FEATURED_IMAGES_VERSION,
 				true
