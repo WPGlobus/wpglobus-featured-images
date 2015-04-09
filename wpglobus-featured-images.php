@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPGlobus Featured Images
  * Plugin URI: https://github.com/WPGlobus/wpglobus-featured-images
- * Description: Set featured image separately for each language defined in WPGlobus.
+ * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
  * Text Domain: wpglobus-featured-images
  * Domain Path: /languages/
  * Version: 1.0.0
@@ -218,13 +218,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				return;
 			}
 
+			/**
+			 * @todo WPGlobus should have a method for this. Add-ons must not use vars directly.
+			 */
 			if ( ! empty( WPGlobus::Config()->disabled_entities ) && in_array( $post_type, WPGlobus::Config()->disabled_entities ) ) {
 				return;
 			}
 
 			wp_register_script(
 				'wpglobus-featured-images',
-				plugins_url() . "/wpglobus-featured-images/wpglobus-featured-images.js",
+				plugin_dir_url( __FILE__ ) . 'wpglobus-featured-images.js',
 				array( 'jquery' ),
 				WPGLOBUS_FEATURED_IMAGES_VERSION,
 				true
