@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: WPGlobus Featured Images
- * Plugin URI: 
- * Description: A WordPress 
+ * Plugin URI: https://github.com/WPGlobus/wpglobus-featured-images
+ * Description: Set featured image separately for each language defined in WPGlobus.
  * Text Domain: wpglobus-featured-images
  * Domain Path: /languages/
  * Version: 1.0.0
@@ -34,7 +34,7 @@ define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '1.0.0' );
 add_action( 'plugins_loaded' , 'wpglobus_featured_images_load' , 11 );
 function wpglobus_featured_images_load() {
 	if ( class_exists('WPGlobus') && 'off' != WPGlobus::Config()->toggle ) {
-		$WPGlobus_Featured_Images = new WPGlobus_Featured_Images();
+		new WPGlobus_Featured_Images();
 	}	
 }	
 
@@ -44,7 +44,8 @@ if ( ! class_exists('WPGlobus_Featured_Images') ) :
 	 * WPGlobus_Featured_Images
 	 */
 	class WPGlobus_Featured_Images {
-		
+
+		/** */
 		function __construct() {
 			
 			if ( is_admin() ) {
@@ -158,7 +159,7 @@ if ( ! class_exists('WPGlobus_Featured_Images') ) :
 		}
 		
 		/**
-		 * Retreive html for thumbnail at front-end.
+		 * Retrieve html for thumbnail at front-end.
 		 * 
 		 * @since 1.0.0
 		 * @see post_thumbnail_html filter
@@ -169,16 +170,19 @@ if ( ! class_exists('WPGlobus_Featured_Images') ) :
          * @var array $attr
 		 * @return string html
 		 */	
-		function on_post_thumbnail_html( $html, $post_id, $post_thumbnail_id, $size, $attr ) {
+		function on_post_thumbnail_html( $html, $post_id,
+			/** @noinspection PhpUnusedParameterInspection */
+			$post_thumbnail_id,
+			$size, $attr ) {
 
 			global $post;
 			$post_type = empty( $post ) ? '' : $post->post_type;
 			if ( empty($post_type) ) {
-				return;
+				return '';
 			}
 			
 			if ( !empty(WPGlobus::Config()->disabled_entities) && in_array($post_type, WPGlobus::Config()->disabled_entities) ) {
-				return;
+				return '';
 			}
 			
 			if ( WPGlobus::Config()->language != WPGlobus::Config()->default_language ) {
@@ -348,7 +352,7 @@ if ( ! class_exists('WPGlobus_Featured_Images') ) :
 		}
 
 		/**
-		 * Retreive html for thumbnail.
+		 * Retrieve html for thumbnail.
 		 *
 		 * @since 1.0.0
 		 *
