@@ -5,7 +5,7 @@
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
  * Version: 1.0.0
  * Author: WPGlobus
- * Author URI: http://www.wpglobus.com/featured_images
+ * Author URI: http://www.wpglobus.com/
  * Network: false
  * License: GPL2
  * Credits: Alex Gor (alexgff) and Gregory Karpinsky (tivnet)
