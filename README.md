@@ -24,8 +24,8 @@
 You can install this plugin directly from your WordPress dashboard:
 
 1. Go to the *Plugins* menu and click *Add New*.
-1. Search for *WPGlobus*.
-1. Click *Install Now* next to the WPGlobus plugin.
+1. Search for *WPGlobus Featured Images*.
+1. Click *Install Now* next to the *WPGlobus Featured Images* plugin.
 1. Activate the plugin.
 
 Alternatively, see the guide to [Manually Installing Plugins](http://codex.wordpress.org/Managing_Plugins#Manual_Plugin_Installation).
