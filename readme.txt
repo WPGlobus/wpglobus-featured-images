@@ -16,7 +16,7 @@ License URI: https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LI
 
 = More info =
 
-* [WPGlobus Featured Images home page](http://www.wpglobus.com/featured-images/).
+* [WPGlobus Featured Images home page](http://www.wpglobus.com/add-ons/featured-images/).
 * [GitHub code repository](https://github.com/WPGlobus/wpglobus-featured-images).
 
 == Installation ==
@@ -42,7 +42,7 @@ We appreciate all contributions, ideas, critique, and help.
 
 = More info? =
 
-Please check out the [WPGlobus Website](http://www.wpglobus.com/featured-images) for additional information.
+Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured-images/) for additional information.
 
 == Screenshots ==
 
