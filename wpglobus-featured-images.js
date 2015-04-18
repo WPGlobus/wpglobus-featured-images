@@ -77,6 +77,9 @@ jQuery(document).ready(function($) {
 			});
 			
 			$(document).ajaxSend(function(event, jqxhr, settings){
+				if ( 'undefined' == typeof settings.data ) {
+					return;	
+				}	
 				if ( settings.data.indexOf('action=set-post-thumbnail') >= 0 && ! api.wp_native_action ) {
 					
 					if ( settings.data.indexOf('thumbnail_id=-1') >= 0 ) {

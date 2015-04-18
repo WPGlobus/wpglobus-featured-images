@@ -50,5 +50,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured
 
 == Changelog ==
 
+= 1.0.1 =
+* FIXED:
+	* Undefined variable in js
+	* Load js at post.php page only
+	
 = 1.0.0 =
 * Initial release
