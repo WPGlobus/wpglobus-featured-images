@@ -1,7 +1,7 @@
 === WPGlobus Featured Images ===
 Contributors: alexgff, tivnetinc, tivnet
 Donate link: http://www.wpglobus.com/
-Tags: featured image, bilingual, globalization, i18n, international, l10n, language, localization, multilanguage, multilingual, switcher, translate, translation, WPGlobus
+Tags: WPGlobus, featured image, bilingual, globalization, i18n, international, l10n, localization, multilanguage, multilingual, switcher, translate, translation
 Requires at least: 4.0
 Tested up to: 4.2
 Stable tag: trunk
