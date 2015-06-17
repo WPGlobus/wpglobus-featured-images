@@ -51,6 +51,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/featured-images)
 
 
 ## Changelog ##
+### 1.1 ###
+* FIXED:
+	* Correct return thumbnail html code for excluded post types in WPGlobus 
+
 ### 1.0.1 ###
 * FIXED:
 	* Undefined variable in js
