@@ -3,7 +3,7 @@
  * Plugin Name: WPGlobus Featured Images
  * Plugin URI: https://github.com/WPGlobus/wpglobus-featured-images
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
- * Version: 1.1
+ * Version: 1.1.1
  * Author: WPGlobus
  * Author URI: http://www.wpglobus.com/
  * Network: false
@@ -27,7 +27,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '1.1' );
+define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '1.1.1' );
 
 add_action( 'plugins_loaded', 'wpglobus_featured_images_load', 11 );
 function wpglobus_featured_images_load() {
@@ -361,8 +361,9 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				</ul>    <?php
 
 				foreach ( WPGlobus::Config()->open_languages as $language ) { ?>
-					<div id="featured-images-tab-<?php echo $language; ?>" class="wpglobus-featured-images-general"
-					     data-language="<?php echo $language; ?>">
+					<div style="padding-top:25px;" id="featured-images-tab-<?php echo $language; ?>" 
+						class="wpglobus-featured-images-general"
+					    data-language="<?php echo $language; ?>">
 						<?php
 						if ( $language != WPGlobus::Config()->default_language ) {
 
