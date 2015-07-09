@@ -1,0 +1,19 @@
+{
+  "name": "wpglobus/wpglobus-featured-images",
+  "type": "wordpress-plugin",
+  "description": "WPGlobus - Multilingual Featured Images",
+  "keywords": ["WordPress","multilingual"],
+  "homepage": "https://github.com/WPGlobus/wpglobus-featured-images",
+  "license": "GPL-2.0",
+  "authors": [
+    {
+      "name": "The WPGlobus Team",
+      "email": "support@wpglobus.com",
+      "homepage": "http://www.wpglobus.com/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0"
+  }
+}
