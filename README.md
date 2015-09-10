@@ -3,7 +3,7 @@
 **Donate link:** http://www.wpglobus.com/  
 **Tags:** featured image, bilingual, globalization, i18n, international, l10n, language, localization, multilanguage, multilingual, switcher, translate, translation, WPGlobus  
 **Requires at least:** 4.0  
-**Tested up to:** 4.2.4
+**Tested up to:** 4.3
 **Stable tag:** trunk  
 **License:** GPLv2  
 **License URI:** https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LICENSE  
