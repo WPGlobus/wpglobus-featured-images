@@ -50,6 +50,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured
 
 == Changelog ==
 
+= 1.2.0 =
+* ADDED:
+	* ajaxComplete handler 
+	
 = 1.1.1 =
 * FIXED:
 	* Admin CSS improvement
