@@ -63,6 +63,11 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		
 			if ( is_admin() ) {
 
+				add_action( 'admin_head', array(
+					$this,
+					'on_admin_head'
+				) );
+				
 				add_action( 'admin_print_scripts', array(
 					$this,
 					'on_admin_scripts'
@@ -88,6 +93,25 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			}
 
 		}
+
+		/**
+		 * Add ajaxComplete handler 
+		 * @see jqxhr.abort() in wpglobus-featured-images.js
+		 * @since 1.2.0
+		 * fix Uncaught TypeError: Cannot read property 'match' of undefined in  wp-seo-post-scraper-305.js?ver=3.0.6:447
+		 */
+		function on_admin_head() { ?>
+<script type="text/javascript">
+//<![CDATA[
+jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
+	if ( response.statusText === 'abort' && 'undefined' === typeof response.responseText ) {
+		// response is Object {readyState: 0, status: 0, statusText: "abort"}
+		response.responseText = '';
+	}
+});
+//]]>
+</script><?php
+		}	
 
 		/**
 		 * Handle ajax process
