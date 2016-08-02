@@ -8,7 +8,7 @@
  * @subpackage Administration
  */
 /*jslint browser: true*/
-/*global jQuery, console, WPGlobusCore, WPGlobusCoreData*/
+/*global jQuery, console, WPGlobusCore, WPGlobusCoreData, WPGlobusFImages*/
 var WPGlobusFeaturedImages;
 
 jQuery(document).ready(function($) {
@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
 			} catch (exception) {api.start=false}
 			
 			api.win = window.dialogArguments || opener || parent || top;
-			if ( 'undefined' != typeof api.win.WPGlobusCoreData ) {
+			if ( 'undefined' !== typeof api.win.WPGlobusCoreData ) {
 				api.default_language = api.win.WPGlobusCoreData.default_language;	
 				$('#postimagediv').css({'display':'none'});
 				$('#postimagediv-hide').prop('checked',false);
@@ -57,6 +57,9 @@ jQuery(document).ready(function($) {
 			$.ajax({type:'POST', url:WPGlobusFImages.ajaxurl, data:{action:WPGlobusFImages.process_ajax, order:order}, dataType:'json'})
 			.done(function (result) {
 				if ( result['result'] == 'ok' ) {
+					if ( result['order']['language'] == WPGlobusCoreData.default_language ) {
+						$( WPGlobusFImages.thumbnailElementDefaultLanguage ).val( result['order']['attr']['thumbnail_id'] );
+					}	
 					api.win.WPGlobusFeaturedImages.setThumbnailHTML(result['html'], order['language']);
 				}	
 			})
@@ -77,10 +80,10 @@ jQuery(document).ready(function($) {
 			});
 			
 			$(document).ajaxSend(function(event, jqxhr, settings){
-				if ( 'undefined' == typeof settings.data ) {
+				if ( 'undefined' === typeof settings.data ) {
 					return;	
 				}	
-				if ( settings.data.indexOf('action=set-post-thumbnail') >= 0 && ! api.wp_native_action ) {
+				if ( settings.data.indexOf( WPGlobusFImages.getThumbnailAction ) >= 0 && ! api.wp_native_action ) {
 					
 					if ( settings.data.indexOf('thumbnail_id=-1') >= 0 ) {
 						return;	

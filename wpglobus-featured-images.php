@@ -196,6 +196,7 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 					break;
 			endswitch;
 
+			$ajax_return['order'] = $order;
 			echo json_encode( $ajax_return );
 			die();
 		}
@@ -264,8 +265,18 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 
 			/** @global string $pagenow */
 			global $pagenow;
-
+			
 			if ( $pagenow == 'post.php' ) :
+
+				global $wp_version;
+				
+				/**
+				 * Action id has been changed from WP 4.6
+				 */
+				$get_thumbnail_action = 'action=get-post-thumbnail-html';
+				if ( version_compare( $wp_version, '4.6-RC1', '<' ) ) :
+					$get_thumbnail_action = 'action=set-post-thumbnail';
+				endif;
 			
 				wp_register_script(
 					'wpglobus-featured-images',
@@ -279,10 +290,12 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 					'wpglobus-featured-images',
 					'WPGlobusFImages',
 					array(
-						'version'      => '',
+						'version'      => WPGLOBUS_FEATURED_IMAGES_VERSION,
 						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 						'parentClass'  => __CLASS__,
-						'process_ajax' => __CLASS__ . '_process_ajax'
+						'process_ajax' => __CLASS__ . '_process_ajax',
+						'getThumbnailAction' => $get_thumbnail_action,
+						'thumbnailElementDefaultLanguage' => 'input[name="_thumbnail_id"]'
 					)
 				);
 				
