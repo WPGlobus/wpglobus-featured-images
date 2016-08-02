@@ -3,7 +3,7 @@ Contributors: alexgff, tivnetinc, tivnet
 Donate link: http://www.wpglobus.com/
 Tags: WPGlobus, featured image, bilingual, globalization, i18n, international, l10n, localization, multilanguage, multilingual, switcher, translate, translation
 Requires at least: 4.0
-Tested up to: 4.5
+Tested up to: 4.6
 Stable tag: trunk
 License: GPLv2
 License URI: https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LICENSE
@@ -50,6 +50,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured
 
 == Changelog ==
 
+= 1.3.0 =
+* ADDED:
+	* WordPress 4.6 compatibility
+	
 = 1.2.0 =
 * ADDED:
 	* ajaxComplete handler 
