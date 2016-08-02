@@ -58,7 +58,9 @@ jQuery(document).ready(function($) {
 			.done(function (result) {
 				if ( result['result'] == 'ok' ) {
 					if ( result['order']['language'] == WPGlobusCoreData.default_language ) {
-						$( WPGlobusFImages.thumbnailElementDefaultLanguage ).val( result['order']['attr']['thumbnail_id'] );
+						if ( $( WPGlobusFImages.thumbnailElementDefaultLanguage ).length == 1 ) {
+							$( WPGlobusFImages.thumbnailElementDefaultLanguage ).val( result['order']['attr']['thumbnail_id'] );
+						}	
 					}	
 					api.win.WPGlobusFeaturedImages.setThumbnailHTML(result['html'], order['language']);
 				}	
