@@ -51,6 +51,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/featured-images)
 
 
 ## Changelog ##
+### 1.4.0 ###
+* ADDED:
+	* Info tab in WPGlobus admin central page.
+	
 ### 1.3.0 ###
 * ADDED:
 	* WordPress 4.6 compatibility
