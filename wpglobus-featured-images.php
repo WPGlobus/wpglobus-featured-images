@@ -51,9 +51,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		/**
 		 * @var string $_SCRIPT_SUFFIX Whether to use minimized or full versions of JS and CSS.
 		 */
-		protected static $_SCRIPT_SUFFIX = '.min';	
+		protected static $_SCRIPT_SUFFIX = '.min';
+		
+		/**
+		 * Tab ID for WPGlobus admin central page.
+		 */
+		protected static $central_tab_id = 'tab-featured-images';	
 	
-		/** */
+		/**
+		 * Constructor.
+		 */
 		function __construct() {
 
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
@@ -62,7 +69,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			}		
 		
 			if ( is_admin() ) {
-
+			
 				add_action( 'admin_head', array(
 					$this,
 					'on_admin_head'
@@ -82,6 +89,37 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					$this,
 					'on_process_ajax'
 				) );
+		
+				if ( class_exists( 'WPGlobus_Admin_Central' ) ) {
+					
+					/**
+					 * @scope admin
+					 * @since 1.4.0
+					 */		
+					add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array(
+						$this,
+						'filter__plugin_action_links'
+					) );
+					
+					/**
+					 * @scope admin
+					 * @since 1.4.0
+					 */
+					add_filter( 'wpglobus_admin_central_tabs', array(
+						$this,
+						'filter__central_tabs'
+					), 10, 2 );
+		
+					/**
+					 * @scope admin
+					 * @since 1.4.0
+					 */	
+					add_action( 'wpglobus_admin_central_panel', array(
+						$this,
+						'filter__admin_central_panel'
+					) );
+				
+				}
 
 			} else {
 
@@ -93,7 +131,68 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			}
 
 		}
+	
+		/**
+		 * Add panel for WPGlobus admin central.
+		 *
+		 * @since 1.4.0		 
+		 */	
+		function filter__admin_central_panel() {
+			
+			$post_types = array_merge( 
+				array( 
+					'post'=>'post', 
+					'page'=>'page' 
+				),
+				get_post_types( 
+					array( 
+						'_builtin'=>false 
+					) 
+				) 
+			);
+			
+			?>
+			<div id="<?php echo self::$central_tab_id; ?>" style="display:none;margin: 0 30px;" class="wpglobus-admin-central-tab">
+				<p>
+				Before using WPGlobus Featured Images with existing post types,<br />
+				please, be sure they are supporting "thumbnail" feature.<br />
+				</p>
+				<h3>List of post types:</h3>
+				<ul>
+					<?php foreach( $post_types as $post_type ) :	?>
+						<?php if ( post_type_supports( $post_type, 'thumbnail' ) ) : ?>
+							<li>Post type <b><?php echo $post_type; ?></b> supports thumbnail.</li>
+						<?php else : ?>	
+							<li>Post type <b><?php echo $post_type; ?></b> doesn't support thumbnail.</li>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</ul>	
+			</div>
+			<?php
+		}
+		
+		/**
+		 * Add tab for WPGlobus admin central.
+		 *
+		 * @since 1.4.0
+		 */
+		function filter__central_tabs( $tabs, $link_template ) {
 
+			$tab = array(
+				'title' 		=> __( 'WPGlobus Featured Images', 'wpglobus' ),
+				'link_class' 	=> array( 'nav-tab', 'nav-tab-active' ),
+				'span_class' 	=> array( 'dashicons', 'dashicons-images-alt' ),
+				'link' 			=> $link_template,
+				'href' 			=> '#',
+				'tab_id' 		=> self::$central_tab_id
+			);		
+			
+			array_unshift( $tabs, $tab );
+			
+			return $tabs;
+			
+		}
+		
 		/**
 		 * Add ajaxComplete handler 
 		 * @see jqxhr.abort() in wpglobus-featured-images.js
@@ -248,14 +347,15 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 		 * @return void
 		 */
 		function on_admin_scripts() {
-
+		
 			/** @global WP_Post $post */
 			global $post;
 			$post_type = empty( $post ) ? '' : $post->post_type;
 			if ( empty( $post_type ) ) {
 				return;
 			}
-
+	
+			
 			/**
 			 * @todo WPGlobus should have a method for this. Add-ons must not use vars directly.
 			 */
@@ -290,11 +390,11 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 					'wpglobus-featured-images',
 					'WPGlobusFImages',
 					array(
-						'version'      => WPGLOBUS_FEATURED_IMAGES_VERSION,
-						'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-						'parentClass'  => __CLASS__,
-						'process_ajax' => __CLASS__ . '_process_ajax',
-						'getThumbnailAction' => $get_thumbnail_action,
+						'version'      					  => WPGLOBUS_FEATURED_IMAGES_VERSION,
+						'ajaxurl'      					  => admin_url( 'admin-ajax.php' ),
+						'parentClass'  					  => __CLASS__,
+						'process_ajax' 					  => __CLASS__ . '_process_ajax',
+						'getThumbnailAction' 			  => $get_thumbnail_action,
 						'thumbnailElementDefaultLanguage' => 'input[name="_thumbnail_id"]'
 					)
 				);
@@ -482,6 +582,28 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 			return $content;
 
 		}
+		
+		/**
+		 * Add a link to the settings page to the plugins list.
+		 * @since 1.4.0
+		 *
+		 * @param array $links array of links for the plugins, adapted when the current plugin is found.
+		 *
+		 * @return array $links
+		 */		
+		function filter__plugin_action_links( $links ) {
+			
+			$link = add_query_arg( 
+				array(
+					'page' => WPGlobus::PAGE_WPGLOBUS_ADMIN_CENTRAL . '#' . self::$central_tab_id
+				),
+				admin_url( 'admin.php' ) 
+			);
+			
+			$settings_link = '<a class="dashicons-before dashicons-admin-site" href="' . esc_url( $link ) . '">&nbsp;' . esc_html__( 'Info' ) . '</a>';
+			array_unshift( $links, $settings_link );
+			return $links;
+		}		
 
 	} // class
 
