@@ -52,6 +52,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/featured-images)
 
 ## Changelog ##
 
+### 1.5.2 ###
+* ADDED:
+	* Version bump.
+
 ### 1.5.1 ###
 * ADDED:
 	* Added readme.
