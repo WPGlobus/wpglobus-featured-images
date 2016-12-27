@@ -3,13 +3,15 @@
  * Plugin Name: WPGlobus Featured Images
  * Plugin URI: https://github.com/WPGlobus/wpglobus-featured-images
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
- * Version: 1.4.0
+ * Text Domain: wpglobus-featured-images
+ * Domain Path: /languages/  
+ * Version: 1.5.0
  * Author: WPGlobus
  * Author URI: http://www.wpglobus.com/
  * Network: false
  * License: GPL2
  * Credits: Alex Gor (alexgff) and Gregory Karpinsky (tivnet)
- * Copyright 2015-2016 WPGlobus
+ * Copyright 2015-2017 WPGlobus
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
@@ -27,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '1.4.0' );
+define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '1.5.0' );
 
 add_action( 'plugins_loaded', 'wpglobus_featured_images_load', 11 );
 function wpglobus_featured_images_load() {
@@ -354,7 +356,6 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 			if ( empty( $post_type ) ) {
 				return;
 			}
-	
 			
 			/**
 			 * @todo WPGlobus should have a method for this. Add-ons must not use vars directly.
@@ -380,7 +381,7 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 			
 				wp_register_script(
 					'wpglobus-featured-images',
-					plugin_dir_url( __FILE__ ) . 'wpglobus-featured-images' . self::$_SCRIPT_SUFFIX . ".js",
+					plugin_dir_url( __FILE__ ) . 'includes/js/wpglobus-featured-images' . self::$_SCRIPT_SUFFIX . ".js",
 					array( 'jquery' ),
 					WPGLOBUS_FEATURED_IMAGES_VERSION,
 					true
