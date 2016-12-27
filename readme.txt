@@ -50,6 +50,10 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured
 
 == Changelog ==
 
+= 1.5.1 =
+* ADDED:
+	* Added readme.
+	
 = 1.5.0 =
 * ADDED:
 	* Revising code.
