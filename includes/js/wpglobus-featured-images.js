@@ -12,9 +12,8 @@
 var WPGlobusFeaturedImages;
 
 jQuery(document).ready(function($) {
-
-	var api;
-	api = WPGlobusFeaturedImages = {
+	"use strict";
+	var api = WPGlobusFeaturedImages = {
 		start : true,
 		action : '',
 		language : '',
