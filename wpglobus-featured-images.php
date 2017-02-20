@@ -4,10 +4,10 @@
  * Plugin URI: https://github.com/WPGlobus/wpglobus-featured-images
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
  * Text Domain: wpglobus-featured-images
- * Domain Path: /languages/  
+ * Domain Path: /languages/
  * Version: 1.5.2
  * Author: WPGlobus
- * Author URI: http://www.wpglobus.com/
+ * Author URI: https://wpglobus.com/
  * Network: false
  * License: GPL2
  * Credits: Alex Gor (alexgff) and Gregory Karpinsky (tivnet)
@@ -39,7 +39,7 @@ function wpglobus_featured_images_load() {
 }
 
 if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
-	
+
 	/**
 	 * WPGlobus_Featured_Images
 	 */
@@ -54,12 +54,12 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		 * @var string $_SCRIPT_SUFFIX Whether to use minimized or full versions of JS and CSS.
 		 */
 		protected static $_SCRIPT_SUFFIX = '.min';
-		
+
 		/**
 		 * Tab ID for WPGlobus admin central page.
 		 */
-		protected static $central_tab_id = 'tab-featured-images';	
-	
+		protected static $central_tab_id = 'tab-featured-images';
+
 		/**
 		 * Constructor.
 		 */
@@ -68,15 +68,15 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
 				self::$_SCRIPT_DEBUG  = true;
 				self::$_SCRIPT_SUFFIX = '';
-			}		
-		
+			}
+
 			if ( is_admin() ) {
-			
+
 				add_action( 'admin_head', array(
 					$this,
 					'on_admin_head'
 				) );
-				
+
 				add_action( 'admin_print_scripts', array(
 					$this,
 					'on_admin_scripts'
@@ -91,18 +91,18 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					$this,
 					'on_process_ajax'
 				) );
-		
+
 				if ( class_exists( 'WPGlobus_Admin_Central' ) ) {
-					
+
 					/**
 					 * @scope admin
 					 * @since 1.4.0
-					 */		
+					 */
 					add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array(
 						$this,
 						'filter__plugin_action_links'
 					) );
-					
+
 					/**
 					 * @scope admin
 					 * @since 1.4.0
@@ -111,16 +111,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 						$this,
 						'filter__central_tabs'
 					), 10, 2 );
-		
+
 					/**
 					 * @scope admin
 					 * @since 1.4.0
-					 */	
+					 */
 					add_action( 'wpglobus_admin_central_panel', array(
 						$this,
 						'filter__admin_central_panel'
 					) );
-				
+
 				}
 
 			} else {
@@ -133,26 +133,26 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			}
 
 		}
-	
+
 		/**
 		 * Add panel for WPGlobus admin central.
 		 *
-		 * @since 1.4.0		 
-		 */	
+		 * @since 1.4.0
+		 */
 		function filter__admin_central_panel() {
-			
-			$post_types = array_merge( 
-				array( 
-					'post'=>'post', 
-					'page'=>'page' 
+
+			$post_types = array_merge(
+				array(
+					'post'=>'post',
+					'page'=>'page'
 				),
-				get_post_types( 
-					array( 
-						'_builtin'=>false 
-					) 
-				) 
+				get_post_types(
+					array(
+						'_builtin'=>false
+					)
+				)
 			);
-			
+
 			?>
 			<div id="<?php echo self::$central_tab_id; ?>" style="display:none;margin: 0 30px;" class="wpglobus-admin-central-tab">
 				<p>
@@ -164,15 +164,15 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					<?php foreach( $post_types as $post_type ) :	?>
 						<?php if ( post_type_supports( $post_type, 'thumbnail' ) ) : ?>
 							<li>Post type <b><?php echo $post_type; ?></b> supports thumbnail.</li>
-						<?php else : ?>	
+						<?php else : ?>
 							<li>Post type <b><?php echo $post_type; ?></b> doesn't support thumbnail.</li>
 						<?php endif; ?>
 					<?php endforeach; ?>
-				</ul>	
+				</ul>
 			</div>
 			<?php
 		}
-		
+
 		/**
 		 * Add tab for WPGlobus admin central.
 		 *
@@ -187,16 +187,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				'link' 			=> $link_template,
 				'href' 			=> '#',
 				'tab_id' 		=> self::$central_tab_id
-			);		
-			
+			);
+
 			array_unshift( $tabs, $tab );
-			
+
 			return $tabs;
-			
+
 		}
-		
+
 		/**
-		 * Add ajaxComplete handler 
+		 * Add ajaxComplete handler
 		 * @see jqxhr.abort() in wpglobus-featured-images.js
 		 * @since 1.2.0
 		 * fix Uncaught TypeError: Cannot read property 'match' of undefined in  wp-seo-post-scraper-305.js?ver=3.0.6:447
@@ -212,7 +212,7 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 });
 //]]>
 </script><?php
-		}	
+		}
 
 		/**
 		 * Handle ajax process
@@ -349,14 +349,14 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 		 * @return void
 		 */
 		function on_admin_scripts() {
-		
+
 			/** @global WP_Post $post */
 			global $post;
 			$post_type = empty( $post ) ? '' : $post->post_type;
 			if ( empty( $post_type ) ) {
 				return;
 			}
-			
+
 			/**
 			 * @todo WPGlobus should have a method for this. Add-ons must not use vars directly.
 			 */
@@ -366,11 +366,11 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 
 			/** @global string $pagenow */
 			global $pagenow;
-			
+
 			if ( $pagenow == 'post.php' ) :
 
 				global $wp_version;
-				
+
 				/**
 				 * Action id has been changed from WP 4.6
 				 */
@@ -378,7 +378,7 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 				if ( version_compare( $wp_version, '4.6-RC1', '<' ) ) :
 					$get_thumbnail_action = 'action=set-post-thumbnail';
 				endif;
-			
+
 				wp_register_script(
 					'wpglobus-featured-images',
 					plugin_dir_url( __FILE__ ) . 'includes/js/wpglobus-featured-images' . self::$_SCRIPT_SUFFIX . ".js",
@@ -399,9 +399,9 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 						'thumbnailElementDefaultLanguage' => 'input[name="_thumbnail_id"]'
 					)
 				);
-				
+
 			endif;
-			
+
 		}
 
 		/**
@@ -499,7 +499,7 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 				</ul>    <?php
 
 				foreach ( WPGlobus::Config()->open_languages as $language ) { ?>
-					<div style="padding-top:25px;" id="featured-images-tab-<?php echo $language; ?>" 
+					<div style="padding-top:25px;" id="featured-images-tab-<?php echo $language; ?>"
 						class="wpglobus-featured-images-general"
 					    data-language="<?php echo $language; ?>">
 						<?php
@@ -583,7 +583,7 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 			return $content;
 
 		}
-		
+
 		/**
 		 * Add a link to the settings page to the plugins list.
 		 * @since 1.4.0
@@ -591,20 +591,20 @@ jQuery( document ).on( 'ajaxComplete', function( ev, response ) {
 		 * @param array $links array of links for the plugins, adapted when the current plugin is found.
 		 *
 		 * @return array $links
-		 */		
+		 */
 		function filter__plugin_action_links( $links ) {
-			
-			$link = add_query_arg( 
+
+			$link = add_query_arg(
 				array(
 					'page' => WPGlobus::PAGE_WPGLOBUS_ADMIN_CENTRAL . '#' . self::$central_tab_id
 				),
-				admin_url( 'admin.php' ) 
+				admin_url( 'admin.php' )
 			);
-			
+
 			$settings_link = '<a class="dashicons-before dashicons-admin-site" href="' . esc_url( $link ) . '">&nbsp;' . esc_html__( 'Info' ) . '</a>';
 			array_unshift( $links, $settings_link );
 			return $links;
-		}		
+		}
 
 	} // class
 

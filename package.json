@@ -13,7 +13,7 @@
   },
   "author": "alexgff, WPGlobus",
   "license": "GPLv2+",
-  "homepage": "http://www.wpglobus.com",
+  "homepage": "https://wpglobus.com",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-bower-task": "^0.4.0",

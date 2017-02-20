@@ -1,6 +1,6 @@
 # WPGlobus Featured Images #
 **Contributors:** alexgff, tivnetinc, tivnet  
-**Donate link:** http://www.wpglobus.com/  
+**Donate link:** https://wpglobus.com/  
 **Tags:** featured image, bilingual, globalization, i18n, international, l10n, language, localization, multilanguage, multilingual, switcher, translate, translation, WPGlobus  
 **Requires at least:** 4.0  
 **Tested up to:** 4.7
@@ -16,7 +16,7 @@
 
 ### More info ###
 
-* [WPGlobus Featured Images home page](http://www.wpglobus.com/featured-images/).
+* [WPGlobus Featured Images home page](https://wpglobus.com/featured-images/).
 * [GitHub code repository](https://github.com/WPGlobus/wpglobus-featured-images).
 
 ## Installation ##
@@ -38,11 +38,11 @@ We appreciate all contributions, ideas, critique, and help.
 
 * To speed up our development, please report bugs, with reproduction steps on [WPGlobus Featured Images GitHub](https://github.com/WPGlobus/wpglobus-featured-images).
 * Plugin and theme authors: please try WPGlobus Featured Images and let us know if you find any compatibility problems.
-* Contact us directly on [WPGlobus.com](http://www.wpglobus.com/contact-us/).
+* Contact us directly on [WPGlobus.com](https://wpglobus.com/contact-us/).
 
 ### More info? ###
 
-Please check out the [WPGlobus Website](http://www.wpglobus.com/featured-images) for additional information.
+Please check out the [WPGlobus Website](https://wpglobus.com/featured-images) for additional information.
 
 ## Screenshots ##
 

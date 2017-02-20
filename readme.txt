@@ -1,6 +1,6 @@
 === WPGlobus Featured Images ===
 Contributors: alexgff, tivnetinc, tivnet
-Donate link: http://www.wpglobus.com/
+Donate link: https://wpglobus.com/
 Tags: WPGlobus, featured image, bilingual, globalization, i18n, international, l10n, localization, multilanguage, multilingual, switcher, translate, translation
 Requires at least: 4.0
 Tested up to: 4.7
@@ -16,7 +16,7 @@ License URI: https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LI
 
 = More info =
 
-* [WPGlobus Featured Images home page](http://www.wpglobus.com/add-ons/featured-images/).
+* [WPGlobus Featured Images home page](https://wpglobus.com/add-ons/featured-images/).
 * [GitHub code repository](https://github.com/WPGlobus/wpglobus-featured-images).
 
 == Installation ==
@@ -38,11 +38,11 @@ We appreciate all contributions, ideas, critique, and help.
 
 * To speed up our development, please report bugs, with reproduction steps on [WPGlobus Featured Images GitHub](https://github.com/WPGlobus/wpglobus-featured-images).
 * Plugin and theme authors: please try WPGlobus Featured Images and let us know if you find any compatibility problems.
-* Contact us directly on [WPGlobus.com](http://www.wpglobus.com/contact-us/).
+* Contact us directly on [WPGlobus.com](https://wpglobus.com/contact-us/).
 
 = More info? =
 
-Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured-images/) for additional information.
+Please check out the [WPGlobus Website](https://wpglobus.com/add-ons/featured-images/) for additional information.
 
 == Screenshots ==
 
@@ -57,7 +57,7 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured
 = 1.5.1 =
 * ADDED:
 	* Added readme.
-	
+
 = 1.5.0 =
 * ADDED:
 	* Revising code.
@@ -69,23 +69,23 @@ Please check out the [WPGlobus Website](http://www.wpglobus.com/add-ons/featured
 = 1.3.0 =
 * ADDED:
 	* WordPress 4.6 compatibility
-	
+
 = 1.2.0 =
 * ADDED:
-	* ajaxComplete handler 
-	
+	* ajaxComplete handler
+
 = 1.1.1 =
 * FIXED:
 	* Admin CSS improvement
 
 = 1.1 =
 * FIXED:
-	* Correct return thumbnail html code for excluded post types in WPGlobus 
-	
+	* Correct return thumbnail html code for excluded post types in WPGlobus
+
 = 1.0.1 =
 * FIXED:
 	* Undefined variable in js
 	* Load js at post.php page only
-	
+
 = 1.0.0 =
 * Initial release
