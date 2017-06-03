@@ -14,13 +14,13 @@ var WPGlobusFeaturedImages;
 jQuery(document).ready(function($) {
 	"use strict";
 	var api = WPGlobusFeaturedImages = {
-		start : true,
-		action : '',
-		language : '',
-		default_language : '',
-		win : '',
-		wp_native_action : false, 
-		init : function() {
+		start: true,
+		action: '',
+		language: '',
+		default_language: '',
+		win: '',
+		wp_native_action: false, 
+		init: function() {
 			try {
 				$('#wpglobus-featured-images-tabs').tabs();
 				
@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
 				this.attachListener();
 			}	
 		},
-		removeThumbnail : function(nonce, language, post_id) {
+		removeThumbnail: function(nonce, language, post_id) {
 			api.wp_native_action = false;
 			var order = {};
 			order['action']   = 'wpglobus-remove-post-thumbnail';
@@ -45,13 +45,13 @@ jQuery(document).ready(function($) {
 		
 			api.ajax(order);			
 		},	
-		setThumbnailHTML : function(html, language){
+		setThumbnailHTML: function(html, language){
 			$('#featured-images-tab-'+language).html(html);
 		},
-		setLanguage : function() {
+		setLanguage: function() {
 			return $('#wpglobus-featured-images-tabs').data('featured-image-language');
 		},
-		ajax : function(order) {
+		ajax: function(order) {
 
 			$.ajax({type:'POST', url:WPGlobusFImages.ajaxurl, data:{action:WPGlobusFImages.process_ajax, order:order}, dataType:'json'})
 			.done(function (result) {
@@ -67,10 +67,12 @@ jQuery(document).ready(function($) {
 			.fail(function (error){})
 			.always(function (jqXHR, status){});		
 		},	
-		attachListener : function() {
-			$('#wpglobus_postimagediv').on( 'click', '.wpglobus-set-post-thumbnail', function( event ) {
+		attachListener: function() {
+			$('#wpglobus_postimagediv').on('click', '.wpglobus-set-post-thumbnail', function( event ) {
 				event.preventDefault();
-				// Stop propagation to prevent thickbox from activating.
+				/**
+				 * Stop propagation to prevent thickbox from activating.
+				 */
 				event.stopPropagation();
 				api.language = $(this).data('language');	
 				wp.media.featuredImage.frame().open();

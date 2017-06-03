@@ -163,7 +163,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				<ul>
 					<?php foreach( $post_types as $post_type ) :	?>
 						<?php if ( post_type_supports( $post_type, 'thumbnail' ) ) : ?>
-							<li>Post type <b><?php echo $post_type; ?></b> supports thumbnail.</li>
+							<li><span style="text-decoration:underline;">Post type <b><?php echo $post_type; ?></b>&nbsp;supports thumbnail</span>.</li>
 						<?php else : ?>
 							<li>Post type <b><?php echo $post_type; ?></b> doesn't support thumbnail.</li>
 						<?php endif; ?>
