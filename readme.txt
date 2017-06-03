@@ -50,6 +50,12 @@ Please check out the [WPGlobus Website](https://wpglobus.com/add-ons/featured-im
 
 == Changelog ==
 
+= 1.6.0 =
+* COMPATIBILITY:
+	* WordPress 4.8.
+* ADDED:
+	* update tab on admin central page.
+	
 = 1.5.2 =
 * ADDED:
 	* Version bump.
