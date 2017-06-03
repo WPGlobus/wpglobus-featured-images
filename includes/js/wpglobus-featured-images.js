@@ -17,7 +17,7 @@ jQuery(document).ready(function($) {
 		start: true,
 		action: '',
 		language: '',
-		default_language: '',
+		defaultLanguage: '',
 		win: '',
 		wp_native_action: false, 
 		init: function() {
@@ -28,7 +28,7 @@ jQuery(document).ready(function($) {
 			
 			api.win = window.dialogArguments || opener || parent || top;
 			if ( 'undefined' !== typeof api.win.WPGlobusCoreData ) {
-				api.default_language = api.win.WPGlobusCoreData.default_language;	
+				api.defaultLanguage = api.win.WPGlobusCoreData.default_language;	
 				$('#postimagediv').css({'display':'none'});
 				$('#postimagediv-hide').prop('checked',false);
 				this.attachListener();
