@@ -504,7 +504,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				if ( $thumbnail_support && current_user_can( 'upload_files' ) ) {
 					add_meta_box(
 						'wpglobus_postimagediv',
-						'WPGlobus Featured Images',
+						$this->get_metabox_title($post_type),
 						array( $this, 'post_thumbnail_meta_box' ),
 						null,
 						'side',
@@ -672,6 +672,44 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 
 			return $links;
 		}
+		
+		/**
+		 * Get metabox title.
+		 *
+		 * @since 1.7.0
+		 */
+		protected function get_metabox_title($post_type = '') {
+			
+			/** @global WP_Post $post */
+			global $post;		
+			
+			if ( '' == $post_type ) {
+				$post_type =  $post->post_type;
+			}
+			
+			$title = 'WPGlobus Featured Images';
+			
+			if ( $this->is_woo() && 'product' == $post_type ) {
+				$title = 'Product images (WPGlobus)';
+			}
+			
+			return $title;
+			
+		}
+	
+		/**
+		 * Check woocommerce.
+		 *
+		 * @since 1.7.0
+		 */	
+		protected function is_woo() {
+			
+			if ( defined( 'WOOCOMMERCE_WPGLOBUS_VERSION' ) && (defined( 'WC_VERSION' ) || defined( 'WOOCOMMERCE_VERSION' )) ) {
+				return true;
+			}
+			
+			return false;
+		}		
 
 	} // class
 
