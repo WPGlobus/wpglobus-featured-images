@@ -57,6 +57,7 @@ Please check out the [WPGlobus Website](https://wpglobus.com/featured-images) fo
 	* WordPress 4.9.
 * ADDED:
 	* WooCommerce Product featured image support.
+	
 ### 1.6.0 ###
 * COMPATIBILITY:
 	* WordPress 4.8.
