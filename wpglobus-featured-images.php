@@ -630,6 +630,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 						"WPGlobusFeaturedImages.removeThumbnail('" . $ajax_nonce . "', '" . $language . "', '" . $post->ID . "');return false;";
 
 					$content = sprintf( $set_thumbnail_link, $upload_iframe_src, $thumbnail_html );
+					
+					/**
+					 * @since 1.7.0
+					 */
+					$_id = '';
+					if ( $language != WPGlobus::Config()->default_language ) {
+						$_id = '-' . $language;
+					}
+					$content .= '<p class="hide-if-no-js howto" id="set-post-thumbnail-desc' . $_id . '">' . esc_html__( 'Click the image to edit or update' ) . '</p>';	
+					
 					$content .= '<p class="hide-if-no-js"><a href="#" id="remove-post-thumbnail-' . $language . '" onclick="' . $onclick . '">' . esc_html__( 'Remove featured image' ) . '</a></p>';
 				}
 				$content_width = $old_content_width;
