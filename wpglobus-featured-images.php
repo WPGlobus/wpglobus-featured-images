@@ -76,9 +76,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				self::$_SCRIPT_DEBUG  = true;
 				self::$_SCRIPT_SUFFIX = '';
 			}
-
+			
+			/**
+			 * Filter of disabled entities.
+			 * Returning array.
+			 
+			 * @since 1.7.0
+			 *
+			 * @param array WPGlobus::Config()->disabled_entities Array of disabled entities.
+			 */
 			$this->disabled_entities = apply_filters( 'wpglobus_disabled_entities', WPGlobus::Config()->disabled_entities );
-
 
 			if ( is_admin() ) {
 
@@ -140,6 +147,9 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					'on_post_thumbnail_html',
 				), 10, 5 );
 
+				/**
+				 * @since 1.7.0
+				 */
 				if ( defined( 'WOOCOMMERCE_WPGLOBUS_VERSION' ) ) {
 					add_filter( 'woocommerce_product_get_image_id', array(
 						$this,
@@ -220,7 +230,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		}
 
 		/**
-		 * Add ajaxComplete handler
+		 * Add ajaxComplete handler.
 		 *
 		 * @see   jqxhr.abort() in wpglobus-featured-images.js
 		 * @since 1.2.0
@@ -240,7 +250,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		}
 
 		/**
-		 * Handle ajax process
+		 * Handle ajax process.
 		 *
 		 * @since 1.0.0
 		 */
@@ -279,7 +289,6 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 								$ajax_return['result'] = 'ok';
 								$ajax_return['html']   =
 									$this->_post_thumbnail_html( null, get_post( $order['attr']['post_id'] ), $order['language'] );
-
 
 							}
 
