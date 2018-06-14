@@ -363,7 +363,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				return $html;
 			}
 
-			if ( ! empty( $this->disabled_entities ) && in_array( $post_type, $this->disabled_entities ) ) {
+			if ( $this->is_disabled( $post_type ) ) {
 				return $html;
 			}
 
@@ -420,8 +420,9 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 
 			/**
 			 * @todo WPGlobus should have a method for this. Add-ons must not use vars directly.
+			 * if ( ! empty( $this->disabled_entities ) && in_array( $post_type, $this->disabled_entities ) ) {
 			 */
-			if ( ! empty( $this->disabled_entities ) && in_array( $post_type, $this->disabled_entities ) ) {
+			if ( $this->is_disabled( $post_type ) ) {	 
 				return;
 			}
 
@@ -480,7 +481,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				return;
 			}
 
-			if ( ! empty( $this->disabled_entities ) && in_array( $post_type, $this->disabled_entities ) ) {
+			if ( $this->is_disabled( $post_type ) ) {	
 				return;
 			}
 
@@ -711,6 +712,25 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			return false;
 		}		
 
+		/**
+		 * Check for disabled post type.
+		 *
+		 * @since 1.7.0
+		 */
+		public function is_disabled( $post_type = '' ) {
+			
+			if ( '' == $post_type ) {
+				return true;
+			}
+			
+			if ( ! empty( $this->disabled_entities ) && in_array( $post_type, $this->disabled_entities ) ) {
+				return true;
+			}
+			
+			return false;
+		}		
+
+		
 	} // class
 
 endif;
