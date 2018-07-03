@@ -179,7 +179,12 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					)
 				)
 			);
-
+			
+			/**
+			 * Unset unneeded post types.
+			 */
+			unset( $post_types['wp_block'] );
+			
 			?>
 			<div id="<?php echo self::$central_tab_id; ?>" style="display:none;margin: 0 30px;"
 					class="wpglobus-admin-central-tab">
