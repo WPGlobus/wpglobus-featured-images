@@ -5,13 +5,13 @@
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
  * Text Domain: wpglobus-featured-images
  * Domain Path: /languages/
- * Version: 1.7.0
+ * Version: 2.0.0
  * Author: WPGlobus
  * Author URI: https://wpglobus.com/
  * Network: false
  * License: GPL2
  * Credits: Alex Gor (alexgff) and Gregory Karpinsky (tivnet)
- * Copyright 2015-2018 WPGlobus
+ * Copyright 2015-2019 WPGlobus
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '1.7.0' );
+define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '2.0.0' );
 
 add_action( 'plugins_loaded', 'wpglobus_featured_images_load', 11 );
 function wpglobus_featured_images_load() {
@@ -54,6 +54,28 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		 * @var string $_SCRIPT_SUFFIX Whether to use minimized or full versions of JS and CSS.
 		 */
 		protected static $_SCRIPT_SUFFIX = '.min';
+		
+		/**
+		 * Default meta key for thumbnail.
+		 * @since 2.0.0
+		 */
+		protected static $thumbnail_meta_key = '_thumbnail_id';
+		
+		/**
+		 * WPGlobus meta key for thumbnail.
+		 * @since 2.0.0
+		 */		
+		protected static $wpglobus_thumbnail_meta_key = 'wpglobus_thumbnail_ids';
+
+		/**
+		 * @since 2.0.0
+		 */			
+		protected static $thumbnail_id = null;
+		
+		/**
+		 * @since 2.0.0
+		 */	
+		protected static $featured_media = null;
 
 		/**
 		 * Tab ID for WPGlobus admin central page.
@@ -87,27 +109,70 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			 */
 			$this->disabled_entities = apply_filters( 'wpglobus_disabled_entities', WPGlobus::Config()->disabled_entities );
 
+			/**
+			 * @see wp-includes\rest-api\class-wp-rest-server.php
+			 */
+			add_filter( 'rest_request_before_callbacks', array( $this, 'filter__rest_before_callbacks' ), 5, 3 );
+			
+			/**
+			 * @see wp-includes\rest-api\class-wp-rest-server.php
+			 */			
+			add_filter( 'rest_request_after_callbacks', array( $this, 'filter__rest_after_callbacks' ), 5, 3 );
+			
 			if ( is_admin() ) {
+					
+				if ( WPGlobus::Config()->builder->is_builder_page() ) {
+					
+					/**
+					 * Builder mode.
+					 */
+					add_filter( 'get_post_metadata', array( $this, 'filter__post_metadata' ), 5, 4 );
+					
+					if ( 'gutenberg' == WPGlobus::Config()->builder->get_id() ) {
+						
+						/**
+						 * @see 'rest_request_before_callbacks' and 'rest_request_after_callbacks' filters above.
+						 */
+						
+					} else {
 
-				add_action( 'admin_head', array(
-					$this,
-					'on_admin_head',
-				) );
+						add_filter( 'update_post_metadata', array( $this, 'filter__update_post_metadata' ), 5, 5 );
+						
+						add_filter( 'delete_post_metadata', array( $this, 'filter__delete_post_metadata' ), 5, 5 );
+						
+						add_action( 'admin_print_scripts', array(
+							$this,
+							'on__builder_admin_scripts',
+						) );
+						
+					}
+					
+				} else {
+				
+					/**
+					 * Standard mode.
+					 */
+					add_action( 'admin_head', array(
+						$this,
+						'on_admin_head',
+					) );
 
-				add_action( 'admin_print_scripts', array(
-					$this,
-					'on_admin_scripts',
-				) );
+					add_action( 'admin_print_scripts', array(
+						$this,
+						'on__admin_scripts',
+					) );
 
-				add_action( 'add_meta_boxes', array(
-					$this,
-					'on_add_meta_boxes',
-				) );
+					add_action( 'add_meta_boxes', array(
+						$this,
+						'on__add_meta_boxes',
+					) );
 
-				add_action( 'wp_ajax_' . __CLASS__ . '_process_ajax', array(
-					$this,
-					'on_process_ajax',
-				) );
+					add_action( 'wp_ajax_' . __CLASS__ . '_process_ajax', array(
+						$this,
+						'on__process_ajax',
+					) );
+					
+				}
 
 				if ( class_exists( 'WPGlobus_Admin_Central' ) ) {
 
@@ -141,6 +206,10 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				}
 
 			} else {
+				
+				/**
+				 * front-end.
+				 */
 
 				add_filter( 'post_thumbnail_html', array(
 					$this,
@@ -161,6 +230,189 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 
 		}
 
+		/**
+		 * @since 2.0.0
+		 */
+		public static function filter__rest_before_callbacks( $response, $handler, $request ) {
+			
+			$builder_language = WPGlobus::Config()->builder->get_language();
+			
+			if ( WPGlobus::Config()->default_language == $builder_language ) {
+				return $response;
+			}
+
+			$body = json_decode( $request->get_body() );
+			if ( empty($body) ) {
+				return $response;
+			}
+	
+			if ( (int) $body->featured_media == 0 ) {
+				/**
+				 * Image was removed by clicking on `Remove featured image` button.
+				 */
+				self::$featured_media = 0;
+				
+			} else {
+				/**
+				 * Featured image was added or changed.
+				 */
+				self::$featured_media = (int) $body->featured_media;
+			}
+
+			$thumbnail_id = get_post_meta( $body->id, self::$thumbnail_meta_key, true );
+			if ( ! empty($thumbnail_id) && (int) $thumbnail_id > 0 ) {
+				self::$thumbnail_id = $thumbnail_id;
+			}
+
+			return $response;
+		}
+		
+		/**
+		 * @since 2.0.0
+		 */
+		public static function filter__rest_after_callbacks( $response, $handler, $request ) {
+			
+			if ( ! empty( $handler['methods']['POST'] ) && ! empty( $handler['methods']['PUT'] ) && ! empty( $handler['methods']['PATCH'] ) ) {
+				
+				/**
+				 * Update post.
+				 */
+				 
+				$builder_language = WPGlobus::Config()->builder->get_language();
+				
+				if ( WPGlobus::Config()->default_language == $builder_language ) {
+					return $response;
+				}				 
+ 
+				$post_id = $response->data['id'];
+					
+				if ( ! is_null(self::$thumbnail_id) ) {
+					update_post_meta( $post_id, self::$thumbnail_meta_key, self::$thumbnail_id );
+				}	
+					
+				if ( is_null( self::$featured_media ) ) {
+
+					$response->data['featured_media'] = '';
+					
+				} else if ( self::$featured_media == 0 ) {
+					
+					/**
+					 * Featured image was removed.
+					 */
+					$wpglobus_thumbnail_ids = (array) get_post_meta( $post_id, self::$wpglobus_thumbnail_meta_key, true );
+					
+					if ( ! empty( $wpglobus_thumbnail_ids[$builder_language] ) ) {
+						unset( $wpglobus_thumbnail_ids[$builder_language] );
+						update_post_meta( $post_id, self::$wpglobus_thumbnail_meta_key, $wpglobus_thumbnail_ids );
+					}
+				
+				} else {
+					
+					/**
+					 * Featured image was added or changed.
+					 */
+					$wpglobus_thumbnail_ids = (array) get_post_meta( $post_id, self::$wpglobus_thumbnail_meta_key, true );
+					
+					$wpglobus_thumbnail_ids[$builder_language] = $response->data['featured_media'];
+					
+					update_post_meta( $post_id, self::$wpglobus_thumbnail_meta_key, $wpglobus_thumbnail_ids );
+					
+				}
+	
+			}
+
+			return $response;
+		}
+		
+		/**
+		 * Delete post meta.
+		 *
+		 * @since 2.0.0
+		 */
+		public static function filter__delete_post_metadata( $check, $object_id, $meta_key, $meta_value, $delete_all ) {
+			
+			if ( self::$thumbnail_meta_key != $meta_key ) {
+				return $check;	
+			}
+			
+			$language = WPGlobus::Config()->builder->get_language();
+			
+			if ( WPGlobus::Config()->default_language == $language ) {
+				return $check;	
+			}
+			
+			$wpglobus_thumbnail_ids = (array) get_post_meta( $object_id, self::$wpglobus_thumbnail_meta_key, true );
+			
+			if ( ! empty($wpglobus_thumbnail_ids[$language]) ) {
+				unset($wpglobus_thumbnail_ids[$language]);
+			}
+			
+			if ( update_post_meta( $object_id, self::$wpglobus_thumbnail_meta_key, $wpglobus_thumbnail_ids ) ) {
+				return true;
+			}
+			
+			return false;			
+		}
+		
+		/**
+		 * Update post meta.
+		 */
+		public static function filter__update_post_metadata( $check, $object_id, $meta_key, $meta_value, $prev_value ) {
+			
+			if ( self::$thumbnail_meta_key != $meta_key ) {
+				return $check;	
+			}
+
+			if ( WPGlobus::Config()->default_language == WPGlobus::Config()->builder->get_language() ) {
+				return $check;	
+			}
+
+			$wpglobus_thumbnail_ids = (array) get_post_meta( $object_id, self::$wpglobus_thumbnail_meta_key, true );
+			
+			$wpglobus_thumbnail_ids[WPGlobus::Config()->builder->get_language()] = $meta_value;
+			
+			if ( update_post_meta( $object_id, self::$wpglobus_thumbnail_meta_key, $wpglobus_thumbnail_ids ) ) {
+				return true;
+			}
+			
+			return false;
+			
+		}
+		
+		/**
+		 * Get post meta.
+		 */
+		public static function filter__post_metadata( $check, $object_id, $meta_key, $single ) {
+
+			if ( self::$thumbnail_meta_key != $meta_key ) {
+				return $check;	
+			}
+			
+			static $new_id = null;
+			if ( ! is_null($new_id) ) {
+				return $new_id;
+			}
+			
+			if ( WPGlobus::Config()->default_language == WPGlobus::Config()->builder->get_language() ) {
+				return $check;	
+			}
+			
+			$wpglobus_thumbnail_ids = (array) get_post_meta( $object_id, self::$wpglobus_thumbnail_meta_key, true );
+
+			if ( ! empty( $wpglobus_thumbnail_ids[WPGlobus::Config()->builder->get_language()] ) ) {
+				
+				$new_id = $wpglobus_thumbnail_ids[WPGlobus::Config()->builder->get_language()];
+				
+				return $new_id;
+			}
+			
+			/**
+			 * Return false to prevent loading featured image for default language.
+			 */
+			return false;
+			
+		}
+		
 		/**
 		 * Add panel for WPGlobus admin central.
 		 *
@@ -259,7 +511,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		 *
 		 * @since 1.0.0
 		 */
-		function on_process_ajax() {
+		function on__process_ajax() {
 
 			$ajax_return = array();
 
@@ -271,7 +523,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					$ajax_return['action'] = $order['action'];
 					if ( $order['language'] == WPGlobus::Config()->default_language ) {
 
-						if ( delete_post_meta( $order['attr']['post_id'], '_thumbnail_id' ) ) {
+						if ( delete_post_meta( $order['attr']['post_id'], self::$thumbnail_meta_key ) ) {
 							$ajax_return['result'] = 'ok';
 							$ajax_return['html']   =
 								$this->_post_thumbnail_html( null, get_post( $order['attr']['post_id'] ), $order['language'] );
@@ -282,14 +534,14 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					} else {
 
 						$wpglobus_thumbnail_ids =
-							(array) get_post_meta( $order['attr']['post_id'], 'wpglobus_thumbnail_ids', true );
+							(array) get_post_meta( $order['attr']['post_id'], self::$wpglobus_thumbnail_meta_key, true );
 
 
 						if ( ! empty( $wpglobus_thumbnail_ids[ $order['language'] ] ) ) {
 
 							unset( $wpglobus_thumbnail_ids[ $order['language'] ] );
 
-							if ( update_post_meta( $order['attr']['post_id'], 'wpglobus_thumbnail_ids', $wpglobus_thumbnail_ids ) ) {
+							if ( update_post_meta( $order['attr']['post_id'], self::$wpglobus_thumbnail_meta_key, $wpglobus_thumbnail_ids ) ) {
 
 								$ajax_return['result'] = 'ok';
 								$ajax_return['html']   =
@@ -303,12 +555,12 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 
 					break;
 				case 'wpglobus-set-post-thumbnail':
-
+				
 					$ajax_return['action'] = $order['action'];
 
 					if ( $order['language'] == WPGlobus::Config()->default_language ) {
 
-						if ( update_post_meta( $order['attr']['post_id'], '_thumbnail_id', $order['attr']['thumbnail_id'] ) ) {
+						if ( update_post_meta( $order['attr']['post_id'], self::$thumbnail_meta_key, $order['attr']['thumbnail_id'] ) ) {
 							$ajax_return['result'] = 'ok';
 							$ajax_return['html']   =
 								$this->_post_thumbnail_html( $order['attr']['thumbnail_id'], get_post( $order['attr']['post_id'] ), $order['language'] );
@@ -320,11 +572,11 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 					} else {
 
 						$wpglobus_thumbnail_ids =
-							(array) get_post_meta( $order['attr']['post_id'], 'wpglobus_thumbnail_ids', true );
+							(array) get_post_meta( $order['attr']['post_id'], self::$wpglobus_thumbnail_meta_key, true );
 
 						$wpglobus_thumbnail_ids[ $order['language'] ] = $order['attr']['thumbnail_id'];
 
-						if ( update_post_meta( $order['attr']['post_id'], 'wpglobus_thumbnail_ids', $wpglobus_thumbnail_ids ) ) {
+						if ( update_post_meta( $order['attr']['post_id'], self::$wpglobus_thumbnail_meta_key, $wpglobus_thumbnail_ids ) ) {
 							$ajax_return['result'] = 'ok';
 							$ajax_return['html']   =
 								$this->_post_thumbnail_html( $order['attr']['thumbnail_id'], get_post( $order['attr']['post_id'] ), $order['language'] );
@@ -373,7 +625,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			}
 
 			if ( WPGlobus::Config()->language != WPGlobus::Config()->default_language ) {
-				$wpglobus_thumbnail_ids = (array) get_post_meta( $post_id, 'wpglobus_thumbnail_ids', true );
+				$wpglobus_thumbnail_ids = (array) get_post_meta( $post_id, self::$wpglobus_thumbnail_meta_key, true );
 				if ( ! empty( $wpglobus_thumbnail_ids[ WPGlobus::Config()->language ] ) ) {
 					$html =
 						wp_get_attachment_image( $wpglobus_thumbnail_ids[ WPGlobus::Config()->language ], $size, false, $attr );
@@ -399,7 +651,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 
 			if ( $product && $product instanceof WC_Product ) {
 
-				$wpglobus_thumbnail_ids = (array) get_post_meta( $product->get_id(), 'wpglobus_thumbnail_ids', true );
+				$wpglobus_thumbnail_ids = (array) get_post_meta( $product->get_id(), self::$wpglobus_thumbnail_meta_key, true );
 				if ( ! empty( $wpglobus_thumbnail_ids[ WPGlobus::Config()->language ] ) ) {
 					$image_id = (int) $wpglobus_thumbnail_ids[ WPGlobus::Config()->language ];
 				}
@@ -409,12 +661,58 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		}
 
 		/**
-		 * Enqueue admin scripts
+		 * @since 2.0.0
+		 */
+		function on__builder_admin_scripts() {
+			
+			/** @global WP_Post $post */
+			global $post;
+			$post_type = empty( $post ) ? '' : $post->post_type;
+			if ( empty( $post_type ) ) {
+				return;
+			}
+
+			if ( $this->is_disabled( $post_type ) ) {	 
+				return;
+			}
+
+			/** @global string $pagenow */
+			global $pagenow;
+
+			if ( $pagenow == 'post.php' ) {
+				
+				wp_register_script(
+					'wpglobus-builder-featured-images',
+					plugin_dir_url( __FILE__ ) . 'includes/js/wpglobus-builder-featured-images' . self::$_SCRIPT_SUFFIX . ".js",
+					array( 'jquery' ),
+					WPGLOBUS_FEATURED_IMAGES_VERSION,
+					true
+				);
+				wp_enqueue_script( 'wpglobus-builder-featured-images' );
+				wp_localize_script(
+					'wpglobus-builder-featured-images',
+					'WPGlobusFeaturedImages',
+					array(
+						'version'			=> WPGLOBUS_FEATURED_IMAGES_VERSION,
+						'builderID'			=> WPGlobus::Config()->builder->get_id(),
+						'current_language'  => WPGlobus::Config()->builder->get_language(),
+						'ajaxurl' 			=> admin_url( 'admin-ajax.php' ),
+						'parentClass' 		=> __CLASS__,
+						'process_ajax' 		=> __CLASS__ . '_process_ajax',
+						'current_language_name' => WPGlobus::Config()->en_language_name[WPGlobus::Config()->builder->get_language()],
+					)
+				);
+				
+			}				
+		}
+		
+		/**
+		 * Enqueue admin scripts.
 		 *
 		 * @since 1.0.0
 		 * @return void
 		 */
-		function on_admin_scripts() {
+		function on__admin_scripts() {
 
 			/** @global WP_Post $post */
 			global $post;
@@ -477,7 +775,7 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		 * @since 1.0.0
 		 * @return void
 		 */
-		function on_add_meta_boxes() {
+		function on__add_meta_boxes() {
 
 			/** @global WP_Post $post */
 			global $post;
@@ -532,8 +830,8 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			/** @global WP_Post $post */
 			global $post;
 
-			$thumbnail_id           = get_post_meta( $post->ID, '_thumbnail_id', true );
-			$wpglobus_thumbnail_ids = (array) get_post_meta( $post->ID, 'wpglobus_thumbnail_ids', true );
+			$thumbnail_id           = get_post_meta( $post->ID, self::$thumbnail_meta_key, true );
+			$wpglobus_thumbnail_ids = (array) get_post_meta( $post->ID, self::$wpglobus_thumbnail_meta_key, true );
 
 			$this->featured_images_tabs( $thumbnail_id, $wpglobus_thumbnail_ids, $post->ID );
 

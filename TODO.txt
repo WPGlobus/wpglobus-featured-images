@@ -1,0 +1,20 @@
+
+
+					/*
+					            [https://api.w.org/featuredmedia] => Array
+						(
+							[0] => Array
+								(
+									[href] => http://www.dev-wpg.com/wp-json/wp/v2/media/244
+									[attributes] => Array
+										(
+											[embeddable] => 1
+										)
+
+								)
+
+						)
+					// */
+					$response->data[featured_media]
+					
+					

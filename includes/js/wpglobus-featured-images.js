@@ -112,7 +112,5 @@ jQuery(document).ready(function($) {
 		}	
 	
 	};
-
 	WPGlobusFeaturedImages.init();
-
 });
