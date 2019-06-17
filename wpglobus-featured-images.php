@@ -5,7 +5,7 @@
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
  * Text Domain: wpglobus-featured-images
  * Domain Path: /languages/
- * Version: 2.0.0
+ * Version: 2.1.0
  * Author: WPGlobus
  * Author URI: https://wpglobus.com/
  * Network: false
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '2.0.0' );
+define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '2.1.0' );
 
 add_action( 'plugins_loaded', 'wpglobus_featured_images_load', 11 );
 function wpglobus_featured_images_load() {

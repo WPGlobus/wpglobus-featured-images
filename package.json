@@ -1,6 +1,6 @@
 {
   "name": "wpglobus-featured-images",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "title": "WPGlobus Featured Images",
   "description": "WPGlobus Featured Images is an extension to the WPGlobus plugin. It allows setting featured images separately for each language.",
   "main": "Gruntfile.js",
