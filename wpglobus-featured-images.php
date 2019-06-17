@@ -420,6 +420,15 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		 */
 		function filter__admin_central_panel() {
 
+			/**
+			 * @since 2.1.0
+			 * @see wpglobus\includes\class-wpglobus-post-types.php
+			 */ 
+			$hidden_types = array();
+			if ( class_exists('WPGlobus_Post_Types') ) {
+				$hidden_types = WPGlobus_Post_Types::hidden_types();
+			}
+
 			$post_types = array_merge(
 				array(
 					'post' => 'post',
@@ -432,11 +441,6 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				)
 			);
 			
-			/**
-			 * Unset unneeded post types.
-			 */
-			unset( $post_types['wp_block'] );
-			
 			?>
 			<div id="<?php echo self::$central_tab_id; ?>" style="display:none;margin: 0 30px;"
 					class="wpglobus-admin-central-tab">
@@ -446,7 +450,11 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				</p>
 				<h3>List of post types:</h3>
 				<ul>
-					<?php foreach ( $post_types as $post_type ) : ?>
+					<?php foreach ( $post_types as $post_type ) : 
+						if ( ! empty($hidden_types) && in_array( $post_type, $hidden_types ) ) {
+							continue;
+						}
+						?>
 						<?php if ( post_type_supports( $post_type, 'thumbnail' ) ) : ?>
 							<li><span style="text-decoration:underline;">Post type <b><?php echo $post_type; ?></b>&nbsp;supports thumbnail</span>.
 							</li>
