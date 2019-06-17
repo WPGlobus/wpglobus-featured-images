@@ -245,8 +245,15 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 			if ( empty($body) ) {
 				return $response;
 			}
-	
-			if ( (int) $body->featured_media == 0 ) {
+			
+			if ( ! isset($body->featured_media) ) {
+				/**
+				 * @since 2.1.0   [17-Jun-2019 07:14:09 UTC] PHP Notice:  Undefined property: stdClass::$featured_media in C
+				 */
+				/**
+				 * Featured image has not been changed. Don't do anything.
+				 */
+			} else if ( (int) $body->featured_media == 0 ) {
 				/**
 				 * Image was removed by clicking on `Remove featured image` button.
 				 */
@@ -291,8 +298,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 				}	
 					
 				if ( is_null( self::$featured_media ) ) {
-
+					
+					/**
+					 * @since 2.1.0
+					 */
+					$wpglobus_thumbnail_ids = (array) get_post_meta( $post_id, self::$wpglobus_thumbnail_meta_key, true );
+					
 					$response->data['featured_media'] = '';
+					if ( ! empty($wpglobus_thumbnail_ids[$builder_language]) ) {
+						$response->data['featured_media'] = $wpglobus_thumbnail_ids[$builder_language];
+					}
 					
 				} else if ( self::$featured_media == 0 ) {
 					
