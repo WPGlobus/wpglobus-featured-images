@@ -52,6 +52,12 @@ Please check out the [WPGlobus Website](https://wpglobus.com/featured-images) fo
 
 ## Changelog ##
 
+### 2.1.0 ###
+* ADDED:
+	* Get hidden post types from WPGlobus core plugin.
+* FIXED:
+	* PHP Notice `Undefined property $featured_media`.
+
 ### 2.0.0 ###
 * COMPATIBILITY:
 	* WordPress 5.
