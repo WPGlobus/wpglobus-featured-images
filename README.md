@@ -52,6 +52,10 @@ Please check out the [WPGlobus Website](https://wpglobus.com/featured-images) fo
 
 ## Changelog ##
 
+### 2.2.0 ###
+* ADDED:
+	* `get_wpglobus_meta_key` method.
+
 ### 2.1.0 ###
 * ADDED:
 	* Get hidden post types from WPGlobus core plugin.
