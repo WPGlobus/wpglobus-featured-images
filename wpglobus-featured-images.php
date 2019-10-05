@@ -231,6 +231,16 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		}
 
 		/**
+		 * Get WPGlobus meta key for thumbnail.
+		 * @since 2.2.0
+		 *
+		 * return string.
+		 */
+		public static function get_wpglobus_meta_key() {
+			return self::$wpglobus_thumbnail_meta_key;
+		}
+		
+		/**
 		 * @since 2.0.0
 		 */
 		public static function filter__rest_before_callbacks( $response, $handler, $request ) {
