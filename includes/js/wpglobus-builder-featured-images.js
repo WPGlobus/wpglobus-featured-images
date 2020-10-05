@@ -3,6 +3,7 @@
  * Interface JS functions
  *
  * @since 2.0.0
+ * @since 2.3.0 Update.
  *
  * @package WPGlobus Featured Images
  * @subpackage Administration
@@ -12,7 +13,9 @@
 jQuery(document).ready(function($) {
 	"use strict";
 	var api = {
-		init: function(){
+		started: true,
+		start: function(){
+			api.addImageHint();
 			api.setTitle();
 		},
 		getCurrentLanguage: function(mode){
@@ -28,11 +31,27 @@ jQuery(document).ready(function($) {
 			return cur;
 		},
 		setTitle: function(){
-			var title = $('#postimagediv h2 span').text();
-			$('#postimagediv h2 span').text(title+' ('+api.getCurrentLanguage('name')+')');
+			// var title = $('#postimagediv h2 span').text();
+			// $('#postimagediv h2 span').text(title+' ('+api.getCurrentLanguage('name')+')');
+		},
+		addImageHint: function(){
+			if ( $('#postimagediv .postbox-header').length == 1 ) {
+				var hint = '<span style="margin-left:40px;">'+WPGlobusFeaturedImages.i18n['image_for']+': '+WPGlobusFeaturedImages.current_language_name+'</span>';
+				hint += '<span style="cursor:pointer;">';
+				hint += 	'<i class="hint-icon dashicons dashicons-editor-help" style="font-size:large;"></i>';
+				hint += '</span>';
+				hint += '<div class="hint-content hidden" style="margin: 0 10px;">';
+				hint += 	'<p>'+WPGlobusFeaturedImages.i18n['help_content1'];WPGlobusFeaturedImages.i18n['help_content2']+'</p>';
+				hint += 	'&nbsp;'+WPGlobusFeaturedImages.i18n['help_content2']+'</p>';
+				hint += '</div>';
+				$('<div class="wpglobus-featured-images-hint" style="width:100%;font-weight:500;margin-top:1em;">'+hint+'</div>').insertAfter('#postimagediv .postbox-header');
+				$(document).on('click', '.wpglobus-featured-images-hint .hint-icon', function( event ) {
+					$('.wpglobus-featured-images-hint .hint-content').toggleClass('hidden');
+				});
+			}
 		}
 	}
 	
-	WPGlobusFeaturedImages =  $.extend( {}, WPGlobusFeaturedImages, api );
-	WPGlobusFeaturedImages.init();	
+	WPGlobusFeaturedImages =  $.extend({}, WPGlobusFeaturedImages, api);
+	WPGlobusFeaturedImages.start();	
 });
