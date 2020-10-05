@@ -3,7 +3,7 @@ Contributors: alexgff, tivnetinc, tivnet
 Donate link: https://wpglobus.com/
 Tags: WPGlobus, featured image, bilingual, globalization, i18n, international, l10n, localization, multilanguage, multilingual, translate, translation
 Requires at least: 4.0
-Tested up to: 5.2
+Tested up to: 5.5
 Stable tag: trunk
 License: GPLv2
 License URI: https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LICENSE
@@ -49,6 +49,12 @@ Please check out the [WPGlobus Website](https://wpglobus.com/add-ons/featured-im
 1. Metabox interface.
 
 == Changelog ==
+
+= 2.3.0 =
+* ADDED:
+	* New admin interface.
+* CORE:
+	* Revised code.
 
 = 2.2.0 =
 * ADDED:
