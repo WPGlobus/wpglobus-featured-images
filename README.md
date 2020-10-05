@@ -52,6 +52,10 @@ Please check out the [WPGlobus Website](https://wpglobus.com/featured-images) fo
 
 ## Changelog ##
 
+### 2.3.1 ###
+* FIXED:
+	* Missed files.
+	
 ### 2.3.0 ###
 * ADDED:
 	* New admin interface.
