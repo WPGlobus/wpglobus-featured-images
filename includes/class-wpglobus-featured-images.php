@@ -943,7 +943,11 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		 *
 		 * @return string html
 		 */
-		function _post_thumbnail_html( $thumbnail_id = null, $post = null, $language ) {
+		function _post_thumbnail_html( $thumbnail_id = null, $post = null, $language = '' ) {
+
+			if ( ! $language ) {
+				$language = WPGlobus::Config()->default_language;
+			}
 
 			/** @global int $content_width */
 			/** @global array $_wp_additional_image_sizes */
