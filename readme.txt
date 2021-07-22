@@ -3,7 +3,7 @@ Contributors: alexgff, tivnetinc, tivnet
 Donate link: https://wpglobus.com/
 Tags: WPGlobus, featured image, bilingual, globalization, i18n, international, l10n, localization, multilanguage, multilingual, translate, translation
 Requires at least: 5.5
-Tested up to: 5.7
+Tested up to: 5.8
 Stable tag: trunk
 License: GPLv2
 License URI: https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LICENSE
