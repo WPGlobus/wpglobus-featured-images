@@ -11,7 +11,7 @@
  * Network: false
  * License: GPL2
  * Credits: Alex Gor (alexgff) and Gregory Karpinsky (tivnet)
- * Copyright 2015-2020 WPGlobus
+ * Copyright 2015-2021 WPGlobus
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.

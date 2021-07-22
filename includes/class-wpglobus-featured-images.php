@@ -125,6 +125,11 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 						/**
 						 * @see 'rest_request_before_callbacks' and 'rest_request_after_callbacks' filters above.
 						 */
+	
+						add_action( 'admin_print_scripts', array(
+							$this,
+							'on__builder_admin_scripts',
+						) );
 						
 					} else {
 
