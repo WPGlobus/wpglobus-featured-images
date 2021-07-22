@@ -50,6 +50,13 @@ Please check out the [WPGlobus Website](https://wpglobus.com/add-ons/featured-im
 
 == Changelog ==
 
+= 2.4.0 =
+* COMPATIBILITY:
+	* WordPress 5.8
+* ADDED:
+	* Checking for builder's page.
+	* Enqueueing JS script for block editor.
+
 = 2.3.1 =
 * FIXED:
 	* Missed files.
