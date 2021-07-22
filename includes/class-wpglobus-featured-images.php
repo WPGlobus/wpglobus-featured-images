@@ -245,11 +245,20 @@ if ( ! class_exists( 'WPGlobus_Featured_Images' ) ) :
 		
 		/**
 		 * @since 2.0.0
+		 * @since 2.4.0 Added checking for builder page.
 		 */
 		public static function filter__rest_before_callbacks( $response, $handler, $request ) {
-			
+
+			/**
+			 * Don't start if it is not builder page.
+			 * @since 2.4.0
+			 */
+			if ( ! WPGlobus::Config()->builder->is_builder_page() ) {
+				return $response;
+			}
+		
 			$builder_language = WPGlobus::Config()->builder->get_language();
-			
+
 			if ( WPGlobus::Config()->default_language == $builder_language ) {
 				return $response;
 			}
