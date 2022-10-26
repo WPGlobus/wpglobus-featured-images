@@ -3,7 +3,7 @@
 **Donate link:** https://wpglobus.com/  
 **Tags:** WPGlobus, featured image, bilingual, globalization, i18n, international, l10n, localization, multilanguage, multilingual, translate, translation  
 **Requires at least:** 5.5  
-**Tested up to:** 5.8
+**Tested up to:** 6.0
 **Stable tag:** trunk  
 **License:** GPLv2  
 **License URI:** https://github.com/WPGlobus/wpglobus-featured-images/blob/master/LICENSE  
@@ -51,6 +51,12 @@ Please check out the [WPGlobus Website](https://wpglobus.com/featured-images) fo
 
 
 ## Changelog ##
+
+### 2.5.0 ###
+* COMPATIBILITY:
+	* WordPress 6
+* ADDED:
+	* JS scripts improvements.
 
 ### 2.4.0 ###
 * COMPATIBILITY:

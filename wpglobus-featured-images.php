@@ -5,13 +5,13 @@
  * Description: Set featured image separately for each language defined in <a href="https://wordpress.org/plugins/wpglobus/">WPGlobus</a>.
  * Text Domain: wpglobus-featured-images
  * Domain Path: /languages/
- * Version: 2.4.0
+ * Version: 2.5.0
  * Author: WPGlobus
  * Author URI: https://wpglobus.com/
  * Network: false
  * License: GPL2
  * Credits: Alex Gor (alexgff) and Gregory Karpinsky (tivnet)
- * Copyright 2015-2021 WPGlobus
+ * Copyright 2015-2022 WPGlobus
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
@@ -29,7 +29,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '2.4.0' );
+define( 'WPGLOBUS_FEATURED_IMAGES_VERSION', '2.5.0' );
 
 add_action( 'plugins_loaded', 'wpglobus_featured_images_load', 11 );
 function wpglobus_featured_images_load() {
